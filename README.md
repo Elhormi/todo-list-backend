@@ -1,61 +1,126 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# API Backend pour Application To-Do List
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Ce dépôt contient le code source de l'API backend pour une application "To-Do List" Full Stack. Développée avec **Laravel 11**, cette API fournit un système d'authentification sécurisé basé sur JWT, un CRUD complet pour la gestion des tâches et des notifications en temps réel avec Pusher.
 
-## About Laravel
+## ✨ Fonctionnalités Principales
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+-   🔐 **Authentification Sécurisée** : Inscription et connexion basées sur les JSON Web Tokens (JWT).
+-   📋 **Gestion des Tâches (CRUD)** : Opérations complètes de création, lecture, mise à jour et suppression des tâches.
+-   👤 **Isolation des Données** : Chaque utilisateur ne peut voir et gérer que ses propres tâches.
+-   🚀 **Notifications en Temps Réel** : Envoi d'un événement via Pusher à chaque création de nouvelle tâche.
+-   🏗️ **Architecture Robuste** : Application des principes SOLID et des design patterns Service/Repository.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🛠️ Guide d'Installation et de Configuration
 
-## Learning Laravel
+Suivez ces étapes pour installer et lancer le projet sur votre machine locale.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Prérequis
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+-   PHP >= 8.2
+-   Composer
+-   Un serveur de base de données (MySQL / MariaDB ou PostgreSQL)
+-   Un compte [Pusher](https://pusher.com/) (le plan gratuit "sandbox" est suffisant)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. Cloner le Dépôt
 
-## Laravel Sponsors
+Naviguez jusqu'à votre répertoire de travail et clonez ce projet :
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+git clone https://github.com/VOTRE-NOM-UTILISATEUR/todo-list-backend.git
+cd todo-list-backend
+```
 
-### Premium Partners
+### 2. Installer les Dépendances PHP
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Utilisez Composer pour installer tous les packages nécessaires au projet.
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Configuration de l'Environnement
 
-## Code of Conduct
+Le fichier `.env` contient toutes les variables de configuration de votre application.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+-   **Étape 3.1 : Créer le fichier .env**
+    Copiez le fichier d'exemple pour créer votre propre fichier de configuration.
+    ```bash
+    cp .env.example .env
+    ```
 
-## Security Vulnerabilities
+-   **Étape 3.2 : Générer les Clés de Sécurité**
+    Générez la clé de l'application et la clé secrète pour JWT.
+    ```bash
+    php artisan key:generate
+    php artisan jwt:secret
+    ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+-   **Étape 3.3 : Configurer la Base de Données**
+    Ouvrez le fichier `.env` et modifiez les lignes suivantes avec les informations de votre base de données locale (exemple pour XAMPP/WAMP) :
+    ```dotenv
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=todo_list_db
+    DB_USERNAME=root
+    DB_PASSWORD=
+    ```
+    *N'oubliez pas de créer manuellement la base de données `todo_list_db` dans votre gestionnaire de BDD (phpMyAdmin, TablePlus, etc.).*
 
-## License
+-   **Étape 3.4 : Configurer Pusher**
+    Dans le même fichier `.env`, renseignez les clés de votre application Pusher :
+    ```dotenv
+    BROADCAST_DRIVER=pusher
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    PUSHER_APP_ID=VOTRE_APP_ID
+    PUSHER_APP_KEY=VOTRE_APP_KEY
+    PUSHER_APP_SECRET=VOTRE_APP_SECRET
+    PUSHER_APP_CLUSTER=VOTRE_APP_CLUSTER
+    ```
+
+### 4. Lancer les Migrations
+
+Cette commande va créer toutes les tables nécessaires (`users`, `tasks`, etc.) dans votre base de données.
+
+```bash
+php artisan migrate
+```
+
+### 5. Démarrer le Serveur
+
+Félicitations ! Votre API est prête à être lancée.
+
+```bash
+php artisan serve
+```
+
+Le serveur de développement démarrera, et votre API sera accessible à l'adresse **`http://127.0.0.1:8000`**.
+
+---
+
+## 🧪 Utilisation et Test de l'API
+
+Il est recommandé d'utiliser un client API comme [Postman](https://www.postman.com/) pour tester les endpoints.
+
+### Authentification
+
+| Méthode | Endpoint                     | Description                                      | Body (form-data)                                       |
+| :------ | :--------------------------- | :----------------------------------------------- | :----------------------------------------------------- |
+| `POST`  | `/api/auth/register`         | Crée un nouvel utilisateur.                      | `full_name`, `email`, `password`, `phone_number`*, `address`* |
+| `POST`  | `/api/auth/login`            | Connecte un utilisateur et retourne un token JWT. | `email`, `password`                                    |
+
+*Les champs marqués d'une astérisque sont optionnels.*
+
+### Tâches
+
+**Note :** Toutes les routes suivantes sont protégées et nécessitent un en-tête d'autorisation : `Authorization: Bearer <votre_token_jwt>`.
+
+| Méthode  | Endpoint         | Description                   | Body (form-data / x-www-form-urlencoded)               |
+| :------- | :--------------- | :---------------------------- | :----------------------------------------------------- |
+| `GET`    | `/api/tasks`     | Liste les tâches de l'utilisateur. | (aucun)                                                |
+| `POST`   | `/api/tasks`     | Crée une nouvelle tâche.      | `title`, `description`*                                |
+| `GET`    | `/api/tasks/{id}`  | Affiche une tâche spécifique. | (aucun)                                                |
+| `PUT`    | `/api/tasks/{id}`  | Met à jour une tâche.         | `title`*, `description`*, `completed`* (0 ou 1)        |
+| `DELETE` | `/api/tasks/{id}`  | Supprime une tâche.           | (aucun)                                                |````
